@@ -1,0 +1,8 @@
+[submodule "GoodreadsScraper"]
+	path = GoodreadsScraper
+	url = https://github.com/ralsuwaidi/GoodreadsScraper
+	branch = master
+[submodule "goodreads-scraper"]
+	path = goodreads-scraper
+	url = https://github.com/ralsuwaidi/goodreads-scraper
+	branch = master
