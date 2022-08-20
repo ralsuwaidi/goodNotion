@@ -1,4 +1,3 @@
+notion-client
 -r goodreads-scraper/requirements.txt
 -r GoodreadsScraper/requirements.txt
-
-notion-client
