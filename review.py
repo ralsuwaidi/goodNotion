@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from tkinter.ttk import Style
 from typing_extensions import reveal_type
 import notion_client
 import json
@@ -16,89 +17,43 @@ class Review:
     notion: notion_client.Client = None
     book_id: str = None
 
-    def add_review(self, json_str=None):
+    def add_review(self):
 
         review_title = ''
-        if len(self.review) > 50:
-            review_title = self.review[:50] + '...'
+        if len(self.review) > 70:
+            review_title = self.review[:70] + '...'
         else:
             review_title = self.review
 
-
-
-
         children = [
-            {
-                "heading_2": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": review_title
-                            }
-                        }
-                    ]
-                }
-            },
-            {
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": "Rating: " + str(self.rating),
-                            },
-                            "annotations": {
-                                "bold": True,
-                            }
-                        }
-                    ]
-                }
-            },
-            {
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": "User: " + self.user_name,
-                            },
-                            "annotations": {
-                                "bold": True,
-                            }
-                        }
-                    ]
-                }
-            },
-            {
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": self.review[:1990],
-                            }
-                        }
-                    ]
-                }
-            }
+            self.child_paragraph(review_title, style='heading_2'),
+            self.child_paragraph("User Rating: " + str(self.rating), bold=True),
+            self.child_paragraph("User Name: " + self.user_name, bold=True),
+            self.child_paragraph(self.review[:1990])
         ]
-
-        if json_str is not None:
-            metadata = {
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "text": {
-                                "content": str(json_str['avg_rating']),
-                            }
-                        }
-                    ]
-                }
-            }
-
-            children.insert(0, metadata)
 
         response = self.notion.blocks.children.append(**{
             "block_id": self.book_id,
             'children': children
         })
+
+    def child_paragraph(self, text, style='paragraph', bold=False):
+        return {
+            style: {
+                "rich_text": [
+                    {
+                        "text": {
+                            "content": text,
+                        },
+                        "annotations": {
+                            "bold": bold,
+                        }
+                    }
+                ]
+            }
+        }
+
+
 
     @classmethod
     def parse_reviews(cls, file):
