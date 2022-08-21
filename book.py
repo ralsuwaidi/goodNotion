@@ -14,9 +14,11 @@ class Book:
     rating: int
     cover: str
     release_date: str
+    url: str
     notion: notion_client.Client
     database_id: str
     book_id: str = None
+    json_str: str = None
 
     STATUS = {
         "Up Next": "yellow",
@@ -71,12 +73,18 @@ class Book:
                            'type': 'select'},
                 'Category': {'id': 'ubSU',
                              'select': {
-                                        'name': self.category},
+                                 'name': self.category},
                              'type': 'select'},
                 'Rating': {'id': '%5C%40EI',
                            'select': {'color': 'gray',
                                       'name': self.RATING[self.rating-1]},
                            'type': 'select'},
+                'Release Date': {'date': {'end': None,
+                                          'start': self.release_date[:10],
+                                          'time_zone': None},
+                                 'type': 'date'},
+                'Store Link': {'type': 'url',
+                               'url': self.url},
 
             },
         })
@@ -118,6 +126,10 @@ class Book:
                 cover = book['cover']['external']['url']
             except:
                 cover = ''
+            try:
+                url = book['Store Link']['url']
+            except:
+                url = ''
 
             book_instance = Book(
                 title=title,
@@ -127,6 +139,7 @@ class Book:
                 rating=len(rating),
                 cover=cover,
                 release_date='date',
+                url=url,
                 notion=notion,
                 database_id=database_id,
                 book_id=book_id
@@ -151,9 +164,11 @@ class Book:
                 rating=round(book_data['avg_rating']),
                 cover=book_data['cover'],
                 release_date=book_data['publish_date'],
+                url=book_data['url'],
                 notion=notion,
                 database_id=database_id,
-                book_id=book_id
+                book_id=book_id,
+                json_str=book_data
             )
 
             book_list.append(book)
