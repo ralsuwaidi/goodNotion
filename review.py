@@ -29,7 +29,7 @@ class Review:
             self.child_paragraph(review_title, style='heading_2'),
             self.child_paragraph("User Rating: " + str(self.rating), bold=True),
             self.child_paragraph("User Name: " + self.user_name, bold=True),
-            self.child_paragraph(self.review[:1990])
+            self.child_paragraph(self.review[:1980])
         ]
 
         response = self.notion.blocks.children.append(**{
