@@ -39,7 +39,7 @@ def push_books(books, status, reviews):
             print('added book: ', book.title)
             print('adding reviews for', book.title)
             book.add_metadata()
-            for review in review_file:
+            for review in review_file[:20]:
                 if book.title == review.book_title:
                     review.notion = book.notion
                     review.book_id = book_id
