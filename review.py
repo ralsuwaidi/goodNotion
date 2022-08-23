@@ -11,6 +11,7 @@ class Review:
     review: str
     review_url: str
     book_title: str
+    book_id_title: str
     date: str
     rating: float
     user_name: str
@@ -27,7 +28,8 @@ class Review:
 
         children = [
             self.child_paragraph(review_title, style='heading_2'),
-            self.child_paragraph("User Rating: " + str(self.rating), bold=True),
+            self.child_paragraph(
+                "User Rating: " + str(self.rating), bold=True),
             self.child_paragraph("User Name: " + self.user_name, bold=True),
             self.child_paragraph(self.review[:1980])
         ]
@@ -53,8 +55,6 @@ class Review:
             }
         }
 
-
-
     @classmethod
     def parse_reviews(cls, file):
         f = open(file)
@@ -69,6 +69,7 @@ class Review:
                 rating=item['rating'],
                 user_name=item['user_name'],
                 book_title=item['book_title'],
+                book_id_title=item['book_id_title'],
             )
 
             review_list.append(review)

@@ -1,12 +1,8 @@
 from dataclasses import dataclass
-from unicodedata import category
 import notion_client
-from pprint import pprint
 import json
 
 from datetime import datetime
-
-
 
 
 @dataclass
@@ -43,8 +39,6 @@ class Book:
 
     def add_book(self):
 
-        
-        
         try:
             if datetime.fromisoformat(self.release_date[:10]):
                 date = self.release_date[:10]
@@ -109,19 +103,21 @@ class Book:
     def add_metadata(self):
         metadata = []
         try:
-            num_pages = self.child_paragraph('Number of pages: ' + str(self.json_str['num_pages']))
+            num_pages = self.child_paragraph(
+                'Number of pages: ' + str(self.json_str['num_pages']))
             metadata.append(num_pages)
         except:
             pass
 
         try:
             avg_rating = self.child_paragraph(
-                        'Average Rating: ' + str(self.json_str['avg_rating']))
+                'Average Rating: ' + str(self.json_str['avg_rating']))
             metadata.append(avg_rating)
         except:
             pass
         try:
-            num_rating = self.child_paragraph('Number of rating: ' + "{:,}".format(self.json_str['num_ratings']))
+            num_rating = self.child_paragraph(
+                'Number of rating: ' + "{:,}".format(self.json_str['num_ratings']))
             metadata.append(num_rating)
         except:
             pass
@@ -255,6 +251,7 @@ class Book:
             }
         )
         return library
+
 
 if __name__ == '__main__':
 
